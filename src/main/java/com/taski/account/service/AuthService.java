@@ -1,9 +1,6 @@
 package com.taski.account.service;
 
-import com.taski.account.dto.CreateUserDTO;
-import com.taski.account.dto.GetUserByEmailDTO;
-import com.taski.account.dto.LoginDTO;
-import com.taski.account.dto.ResetPasswordDTO;
+import com.taski.account.dto.*;
 import com.taski.account.model.User;
 import com.taski.account.repository.UserRepository;
 import com.taski.email.service.EmailService;
@@ -115,7 +112,7 @@ public class AuthService {
     }
 
     public String login(LoginDTO loginDTO) {
-        String invalid = "Invalid credentials";
+        String invalid = "Invalid credentials.";
         Optional<User> userOPT = userRepository.getUserByEmail(loginDTO.getEmail());
         if (userOPT.isEmpty()){
             throw new IllegalStateException(invalid);
@@ -128,9 +125,10 @@ public class AuthService {
         }
 
         if (!user.getEmailVerified()) {
-            throw new IllegalStateException("Email not verified");
+            throw new IllegalStateException("Email not verified.");
         }
 
         return jwtService.generateToken(user);
     }
+
 }

@@ -102,4 +102,21 @@ public class UserRepository {
         int rows = jdbcTemplate.update("CALL sp_update_user_password(?, ?)", id, newPassword);
         return rows > 0;
     }
+
+    public Optional<User> getUserById(Long id){
+        return jdbcTemplate.query(
+                "CALL sp_get_user_by_id(?)",
+                rs -> {
+                    if (rs.next()){
+                        User user = new User();
+                        user.setId(rs.getLong("id"));
+                        user.setUsername(rs.getString("username"));
+                        user.setEmail(rs.getString("email"));
+                        user.setPassword(rs.getString("password_hash"));
+                        return Optional.of(user);
+                    }
+                    return Optional.empty();
+                }, id
+        );
+    }
 }
