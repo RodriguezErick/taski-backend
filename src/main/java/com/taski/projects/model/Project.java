@@ -33,7 +33,12 @@ public class Project {
         this.description = description;
     }
 
-    public Project(long id, long userId, String name, String description, LocalDateTime createdAt) {
+    public Project(String name, Long id, String description){
+        this.name = name;
+        this.id = id;
+        this.description = description;
+    }
+    public Project(Long id, Long userId, String name, String description, LocalDateTime createdAt) {
         this.id = id;
         this.userId = userId;
         this.name = name;
