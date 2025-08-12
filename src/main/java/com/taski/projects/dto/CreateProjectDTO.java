@@ -1,14 +1,15 @@
 package com.taski.projects.dto;
 
+import com.taski.utils.Constants;
 import jakarta.validation.constraints.NotBlank;
 
 public class CreateProjectDTO {
     private Long userId;
 
-    @NotBlank(message = "Name is a must.")
+    @NotBlank(message = "Name" + Constants.IS_MANDATORY_FIELD)
     private String name;
 
-    @NotBlank(message = "Description is a must")
+    @NotBlank(message = "Description" + Constants.IS_MANDATORY_FIELD)
     private String description;
 
     public CreateProjectDTO(){}

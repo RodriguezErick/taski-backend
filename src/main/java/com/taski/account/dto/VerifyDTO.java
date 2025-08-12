@@ -1,9 +1,10 @@
 package com.taski.account.dto;
 
+import com.taski.utils.Constants;
 import jakarta.validation.constraints.NotBlank;
 
 public class VerifyDTO {
-    @NotBlank
+    @NotBlank(message = "Token" + Constants.IS_MANDATORY_FIELD)
     private String token;
 
     public VerifyDTO(){}

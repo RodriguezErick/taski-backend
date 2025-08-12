@@ -1,15 +1,16 @@
 package com.taski.projects.dto;
 
+import com.taski.utils.Constants;
 import jakarta.validation.constraints.NotBlank;
 
 public class UpdateProjectDTO {
-    @NotBlank(message = "Project id is required.")
+    @NotBlank(message = "Project id" + Constants.IS_MANDATORY_FIELD)
     private Long id;
 
-    @NotBlank(message = "Project name is required.")
+    @NotBlank(message = "Project name" + Constants.IS_MANDATORY_FIELD)
     private String name;
 
-    @NotBlank(message = "Project description is required.")
+    @NotBlank(message = "Project description" + Constants.IS_MANDATORY_FIELD)
     private String description;
 
     public UpdateProjectDTO(){}

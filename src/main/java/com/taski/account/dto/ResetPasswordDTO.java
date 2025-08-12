@@ -1,12 +1,13 @@
 package com.taski.account.dto;
 
+import com.taski.utils.Constants;
 import jakarta.validation.constraints.NotBlank;
 
 public class ResetPasswordDTO {
-    @NotBlank
+    @NotBlank(message = "Token" + Constants.IS_MANDATORY_FIELD)
     private String token;
 
-    @NotBlank
+    @NotBlank(message = "New Password" + Constants.IS_MANDATORY_FIELD)
     private String newPassword;
 
     public ResetPasswordDTO(){}

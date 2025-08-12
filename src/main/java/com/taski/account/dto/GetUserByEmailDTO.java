@@ -1,11 +1,12 @@
 package com.taski.account.dto;
 
+import com.taski.utils.Constants;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 
 public class GetUserByEmailDTO {
     @Email
-    @NotBlank(message = "Email is required.")
+    @NotBlank(message = "Email" + Constants.IS_MANDATORY_FIELD)
     private String email;
 
     public GetUserByEmailDTO(){}
