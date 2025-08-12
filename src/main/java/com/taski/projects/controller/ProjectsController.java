@@ -6,6 +6,7 @@ import com.taski.projects.model.Project;
 import com.taski.projects.service.ProjectService;
 import com.taski.security.JwtService;
 import com.taski.utils.ApiResponse;
+import com.taski.utils.ValidationUtils;
 import jakarta.validation.Valid;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
@@ -29,11 +30,9 @@ public class ProjectsController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<ApiResponse<?>> createProject(@RequestHeader("Authorization") String authHeader, @Valid @RequestBody CreateProjectDTO projectDTO){
+    public ResponseEntity<ApiResponse<?>> createProject(@Valid @RequestBody CreateProjectDTO projectDTO){
         try{
-            String token = authHeader.replace("Bearer ", "");
-            Long userId = jwtService.extractUserId(token);
-            projectDTO.setUserId(userId);
+            projectDTO.setUserId(ValidationUtils.getUserID());
             projectService.createProject(projectDTO);
             Map<String, String> projectInfo = new HashMap<>();
             projectInfo.put("name", projectDTO.getName());
