@@ -6,4 +6,5 @@ public class Utils {
     public static Long getUserID(){
         return (Long) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
+
 }
