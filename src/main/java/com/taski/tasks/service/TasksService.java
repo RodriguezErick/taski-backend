@@ -6,7 +6,10 @@ import com.taski.projects.service.ProjectService;
 import com.taski.tasks.dto.CreateTaskDTO;
 import com.taski.tasks.dto.UpdateTaskDTO;
 import com.taski.tasks.model.Task;
+<<<<<<< HEAD
 import com.taski.tasks.model.TaskDetails;
+=======
+>>>>>>> beeba36 (Add Tasks CRUD)
 import com.taski.tasks.model.TaskWithProject;
 import com.taski.tasks.repository.TasksRepository;
 import com.taski.utils.Constants;
@@ -60,8 +63,12 @@ public class TasksService {
         tasksRepository.deleteTask(id);
     }
 
+<<<<<<< HEAD
     public List<TaskWithProject> getTasksByUserId(){
         Long userId = Utils.getUserID();
+=======
+    public List<TaskWithProject> getTasksByUserId(Long userId){
+>>>>>>> beeba36 (Add Tasks CRUD)
         Optional<User> userOPT = userRepository.getUserById(userId);
         if (userOPT.isEmpty()){
             throw new IllegalStateException("User not found, invalid or expired token.");
@@ -72,6 +79,7 @@ public class TasksService {
         return tasksRepository.getTasksByUserId(user.getId());
     }
 
+<<<<<<< HEAD
     public List<TaskDetails> getTasksByProjectId(Long projectId){
         Long userId = Utils.getUserID();
         Optional<User> userOPT = userRepository.getUserById(userId);
@@ -88,6 +96,11 @@ public class TasksService {
 
     public boolean userHasTask(Long taskId) {
         return getTasksByUserId()
+=======
+    public boolean userHasTask(Long taskId) {
+        Long userId = Utils.getUserID();
+        return getTasksByUserId(userId)
+>>>>>>> beeba36 (Add Tasks CRUD)
                 .stream()
                 .anyMatch(task -> Objects.equals(task.getId(), taskId));
     }
