@@ -25,6 +25,9 @@ public class Project {
     @Column(nullable = false)
     private LocalDateTime createdAt;
 
+    @Column(nullable = true)
+    private int taskCount;
+
     public Project(){}
 
     public Project(Long userId, String name, String description){
@@ -38,12 +41,13 @@ public class Project {
         this.id = id;
         this.description = description;
     }
-    public Project(Long id, Long userId, String name, String description, LocalDateTime createdAt) {
+    public Project(Long id, Long userId, String name, String description, LocalDateTime createdAt, int taskCount) {
         this.id = id;
         this.userId = userId;
         this.name = name;
         this.description = description;
         this.createdAt = createdAt;
+        this.taskCount = taskCount;
     }
 
     public Long getId() {
@@ -84,5 +88,13 @@ public class Project {
 
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public int getTaskCount() {
+        return taskCount;
+    }
+
+    public void setTaskCount(int taskCount) {
+        this.taskCount = taskCount;
     }
 }
