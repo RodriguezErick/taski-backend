@@ -1,10 +1,13 @@
-package com.taski.projects.controller;
+package com.taski.tasks.controller;
 
 import com.taski.projects.dto.CreateProjectDTO;
 import com.taski.projects.dto.UpdateProjectDTO;
 import com.taski.projects.model.Project;
-import com.taski.projects.service.ProjectService;
-import com.taski.security.JwtService;
+import com.taski.tasks.dto.CreateTaskDTO;
+import com.taski.tasks.dto.UpdateTaskDTO;
+import com.taski.tasks.model.TaskDetails;
+import com.taski.tasks.model.TaskWithProject;
+import com.taski.tasks.service.TasksService;
 import com.taski.utils.ApiResponse;
 import com.taski.utils.Utils;
 import jakarta.validation.Valid;
@@ -18,26 +21,24 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/projects")
-public class ProjectsController {
-    private final ProjectService projectService;
+@RequestMapping("/tasks")
+public class TasksController {
+    private final TasksService tasksService;
 
-
-    public ProjectsController(ProjectService projectService){
-        this.projectService = projectService;
+    public TasksController(TasksService tasksService){
+        this.tasksService = tasksService;
     }
 
     @PostMapping("/create")
-    public ResponseEntity<ApiResponse<?>> createProject(@Valid @RequestBody CreateProjectDTO projectDTO){
+    public ResponseEntity<ApiResponse<?>> createTask(@Valid @RequestBody CreateTaskDTO taskDTO){
         try{
-            projectDTO.setUserId(Utils.getUserID());
-            projectService.createProject(projectDTO);
+            tasksService.createTask(taskDTO);
             Map<String, String> projectInfo = new HashMap<>();
-            projectInfo.put("name", projectDTO.getName());
+            projectInfo.put("title", taskDTO.getTitle());
 
             ApiResponse<Map<String, String>> response = new ApiResponse<>(
                     "success",
-                    "Project created successfully",
+                    "Task created successfully",
                     HttpStatus.CREATED.value(),
                     projectInfo
             );
@@ -55,14 +56,40 @@ public class ProjectsController {
     }
 
     @GetMapping("/by-user")
-    public ResponseEntity<ApiResponse<?>> getProjectsByUser(){
+    public ResponseEntity<ApiResponse<?>> getTasksByUser(){
         try{
 
-            List<Project> result = projectService.getProjectsByUserId();
+            List<TaskWithProject> result = tasksService.getTasksByUserId();
 
-            ApiResponse<List<Project>> response = new ApiResponse<>(
+            ApiResponse<List<TaskWithProject>> response = new ApiResponse<>(
                     "success",
-                    "Got projects successfully.",
+                    "Got Tasks successfully.",
+                    HttpStatus.OK.value(),
+                    result
+            );
+            return ResponseEntity.status(HttpStatus.OK).body(response);
+
+        } catch (DataAccessException e){
+
+            String rootMessage = e.getRootCause() != null ? e.getRootCause().getMessage() : e.getMessage();
+
+            ApiResponse<Object> response = new ApiResponse<>("error", "Database error: " + rootMessage, HttpStatus.INTERNAL_SERVER_ERROR.value());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        } catch (Exception e) {
+            ApiResponse<Object> response = new ApiResponse<>("error", "Unexpected error: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR.value());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
+
+    @GetMapping("/by-project/{projectId}")
+    public ResponseEntity<ApiResponse<?>> getTasksByProject(@PathVariable Long projectId){
+        try{
+
+            List<TaskDetails> result = tasksService.getTasksByProjectId(projectId);
+
+            ApiResponse<List<TaskDetails>> response = new ApiResponse<>(
+                    "success",
+                    "Got Tasks successfully.",
                     HttpStatus.OK.value(),
                     result
             );
@@ -81,23 +108,23 @@ public class ProjectsController {
     }
 
     @PostMapping("/update")
-    public ResponseEntity<ApiResponse<?>> updateProjects(@Valid @RequestBody UpdateProjectDTO projectDTO){
+    public ResponseEntity<ApiResponse<?>> updateTask(@Valid @RequestBody UpdateTaskDTO taskDTO){
         try{
-            boolean updated = projectService.updateProject(projectDTO);
+            boolean updated = tasksService.updateTask(taskDTO);
 
             if (!updated) {
-                ApiResponse<Object> response = new ApiResponse<>("error", "No project found with id " + projectDTO.getId(), HttpStatus.NOT_FOUND.value());
+                ApiResponse<Object> response = new ApiResponse<>("error", "No task found with id " + taskDTO.getId(), HttpStatus.NOT_FOUND.value());
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
             }
-            Map<String, String> projectInfo = new HashMap<>();
-            projectInfo.put("id", projectDTO.getId().toString());
-            projectInfo.put("name", projectDTO.getName());
+            Map<String, String> taskInfo = new HashMap<>();
+            taskInfo.put("id", taskDTO.getId().toString());
+            taskInfo.put("name", taskDTO.getTitle());
 
             ApiResponse<Map<String, String>> response = new ApiResponse<>(
                     "success",
                     "Project updated successfully",
                     HttpStatus.OK.value(),
-                    projectInfo
+                    taskInfo
             );
             return ResponseEntity.status(HttpStatus.OK).body(response);
         } catch (DataAccessException e) {
@@ -113,17 +140,17 @@ public class ProjectsController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<ApiResponse<?>> deleteProject(@PathVariable Long id){
+    public ResponseEntity<ApiResponse<?>> deleteTask(@PathVariable Long id){
         try{
-            projectService.deleteProject(id);
-            Map<String, String> projectInfo = new HashMap<>();
-            projectInfo.put("id", id.toString());
+            tasksService.deleteTask(id);
+            Map<String, String> taskInfo = new HashMap<>();
+            taskInfo.put("id", id.toString());
 
             ApiResponse<Map<String, String>> response = new ApiResponse<>(
                     "success",
-                    "Project Deleted successfully",
+                    "Task Deleted successfully",
                     HttpStatus.OK.value(),
-                    projectInfo
+                    taskInfo
             );
             return ResponseEntity.status(HttpStatus.OK).body(response);
         } catch (DataAccessException e) {

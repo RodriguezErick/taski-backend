@@ -1,70 +1,37 @@
 package com.taski.tasks.model;
 
-import jakarta.persistence.*;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
-@Entity
-@Table(name = "tbl_tasks")
-public class Task {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @Column(nullable = false)
+public class TaskDetails {
+    private Long taskId;
     private Long projectId;
-
-    @Column(nullable = false)
     private String title;
-
-    @Column(nullable = false)
     private String description;
-
-    @Column(nullable = false)
     private boolean isCompleted;
-
-    @Column(nullable = false)
     private LocalDate dueDate;
-
-    @Column(nullable = false)
     private LocalDateTime createdAt;
+    private List<String> tags;
 
-
-    public Task(){}
-
-    public Task(Long id, Long projectId, String title, String description, boolean isCompleted, LocalDate dueDate){
-        this.id = id;
-        this.projectId = projectId;
-        this.title = title;
-        this.description = description;
-        this.isCompleted = isCompleted;
-        this.dueDate = dueDate;
-    }
-
-    public Task(Long id, Long projectId, String title, String description, boolean isCompleted, LocalDate dueDate, LocalDateTime createdAt){
-        this.id = id;
+    public TaskDetails(Long taskId, Long projectId, String title, String description, boolean isCompleted, LocalDate dueDate,
+                       LocalDateTime createdAt, List<String> tags){
+        this.taskId = taskId;
         this.projectId = projectId;
         this.title = title;
         this.description = description;
         this.isCompleted = isCompleted;
         this.dueDate = dueDate;
         this.createdAt = createdAt;
+        this.tags = tags;
     }
 
-    public Task(Long projectId, String title, String description,LocalDate dueDate){
-        this.projectId = projectId;
-        this.title = title;
-        this.description = description;
-        this.dueDate = dueDate;
+    public Long getTaskId() {
+        return taskId;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
+    public void setTaskId(Long taskId) {
+        this.taskId = taskId;
     }
 
     public Long getProjectId() {
@@ -113,5 +80,13 @@ public class Task {
 
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public List<String> getTags() {
+        return tags;
+    }
+
+    public void setTags(List<String> tags) {
+        this.tags = tags;
     }
 }

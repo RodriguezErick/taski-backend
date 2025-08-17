@@ -1,48 +1,25 @@
 package com.taski.tasks.model;
 
-import jakarta.persistence.*;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
-@Entity
-@Table(name = "tbl_tasks")
-public class Task {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class TaskWithProject {
     private Long id;
-
-    @Column(nullable = false)
     private Long projectId;
-
-    @Column(nullable = false)
     private String title;
-
-    @Column(nullable = false)
     private String description;
-
-    @Column(nullable = false)
     private boolean isCompleted;
-
-    @Column(nullable = false)
     private LocalDate dueDate;
-
-    @Column(nullable = false)
     private LocalDateTime createdAt;
+    private String projectName;
+    private String projectDescription;
+    private LocalDateTime projectCreatedAt;
+    private List<String> tags;
 
-
-    public Task(){}
-
-    public Task(Long id, Long projectId, String title, String description, boolean isCompleted, LocalDate dueDate){
-        this.id = id;
-        this.projectId = projectId;
-        this.title = title;
-        this.description = description;
-        this.isCompleted = isCompleted;
-        this.dueDate = dueDate;
-    }
-
-    public Task(Long id, Long projectId, String title, String description, boolean isCompleted, LocalDate dueDate, LocalDateTime createdAt){
+    public TaskWithProject(Long id, Long projectId, String title, String description,
+                           boolean isCompleted, LocalDate dueDate, LocalDateTime createdAt, String projectName,
+                           String projectDescription, LocalDateTime projectCreatedAt, List<String> tags) {
         this.id = id;
         this.projectId = projectId;
         this.title = title;
@@ -50,13 +27,10 @@ public class Task {
         this.isCompleted = isCompleted;
         this.dueDate = dueDate;
         this.createdAt = createdAt;
-    }
-
-    public Task(Long projectId, String title, String description,LocalDate dueDate){
-        this.projectId = projectId;
-        this.title = title;
-        this.description = description;
-        this.dueDate = dueDate;
+        this.projectName = projectName;
+        this.projectDescription = projectDescription;
+        this.projectCreatedAt = projectCreatedAt;
+        this.tags = tags;
     }
 
     public Long getId() {
@@ -95,8 +69,8 @@ public class Task {
         return isCompleted;
     }
 
-    public void setCompleted(boolean completed) {
-        isCompleted = completed;
+    public void setCompleted(boolean isCompleted) {
+        this.isCompleted = isCompleted;
     }
 
     public LocalDate getDueDate() {
@@ -113,5 +87,37 @@ public class Task {
 
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public String getProjectName() {
+        return projectName;
+    }
+
+    public void setProjectName(String projectName) {
+        this.projectName = projectName;
+    }
+
+    public String getProjectDescription() {
+        return projectDescription;
+    }
+
+    public void setProjectDescription(String projectDescription) {
+        this.projectDescription = projectDescription;
+    }
+
+    public LocalDateTime getProjectCreatedAt() {
+        return projectCreatedAt;
+    }
+
+    public void setProjectCreatedAt(LocalDateTime projectCreatedAt) {
+        this.projectCreatedAt = projectCreatedAt;
+    }
+
+    public List<String> getTags() {
+        return tags;
+    }
+
+    public void setTags(List<String> tags) {
+        this.tags = tags;
     }
 }

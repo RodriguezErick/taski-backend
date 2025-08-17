@@ -22,6 +22,7 @@ public class ProjectsRepository {
     public void deleteProject(Long id){
         jdbcTemplate.update("CALL sp_delete_project(?)", id);
     }
+
     public int updateProject(UpdateProjectDTO projectDTO){
         return jdbcTemplate.update("CALL sp_update_project(?,?,?)",
                 Math.toIntExact(projectDTO.getId()), projectDTO.getName(), projectDTO.getDescription());
@@ -34,7 +35,8 @@ public class ProjectsRepository {
                         rs.getLong("user_id"),
                         rs.getString("name"),
                         rs.getString("description"),
-                        rs.getTimestamp("created_at").toLocalDateTime()
+                        rs.getTimestamp("created_at").toLocalDateTime(),
+                        rs.getInt("task_count")
                 ), userId
         );
     }
