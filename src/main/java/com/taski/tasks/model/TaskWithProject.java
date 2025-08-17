@@ -2,6 +2,7 @@ package com.taski.tasks.model;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class TaskWithProject {
     private Long id;
@@ -14,10 +15,11 @@ public class TaskWithProject {
     private String projectName;
     private String projectDescription;
     private LocalDateTime projectCreatedAt;
+    private List<String> tags;
 
     public TaskWithProject(Long id, Long projectId, String title, String description,
-                                  boolean isCompleted, LocalDate dueDate, LocalDateTime createdAt, String projectName,
-                           String projectDescription, LocalDateTime projectCreatedAt) {
+                           boolean isCompleted, LocalDate dueDate, LocalDateTime createdAt, String projectName,
+                           String projectDescription, LocalDateTime projectCreatedAt, List<String> tags) {
         this.id = id;
         this.projectId = projectId;
         this.title = title;
@@ -28,6 +30,7 @@ public class TaskWithProject {
         this.projectName = projectName;
         this.projectDescription = projectDescription;
         this.projectCreatedAt = projectCreatedAt;
+        this.tags = tags;
     }
 
     public Long getId() {
@@ -62,11 +65,11 @@ public class TaskWithProject {
         this.description = description;
     }
 
-    public boolean isIsCompleted() {
+    public boolean isCompleted() {
         return isCompleted;
     }
 
-    public void setIsCompleted(boolean isCompleted) {
+    public void setCompleted(boolean isCompleted) {
         this.isCompleted = isCompleted;
     }
 
@@ -110,4 +113,11 @@ public class TaskWithProject {
         this.projectCreatedAt = projectCreatedAt;
     }
 
+    public List<String> getTags() {
+        return tags;
+    }
+
+    public void setTags(List<String> tags) {
+        this.tags = tags;
+    }
 }

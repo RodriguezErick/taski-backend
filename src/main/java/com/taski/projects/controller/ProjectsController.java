@@ -54,6 +54,32 @@ public class ProjectsController {
         }
     }
 
+    @GetMapping("/by-user")
+    public ResponseEntity<ApiResponse<?>> getProjectsByUser(){
+        try{
+
+            List<Project> result = projectService.getProjectsByUserId();
+
+            ApiResponse<List<Project>> response = new ApiResponse<>(
+                    "success",
+                    "Got projects successfully.",
+                    HttpStatus.OK.value(),
+                    result
+            );
+            return ResponseEntity.status(HttpStatus.OK).body(response);
+
+        } catch (DataAccessException e){
+
+            String rootMessage = e.getRootCause() != null ? e.getRootCause().getMessage() : e.getMessage();
+
+            ApiResponse<Object> response = new ApiResponse<>("error", "Database error: " + rootMessage, HttpStatus.INTERNAL_SERVER_ERROR.value());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        } catch (Exception e) {
+            ApiResponse<Object> response = new ApiResponse<>("error", "Unexpected error: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR.value());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
+
     @PostMapping("/update")
     public ResponseEntity<ApiResponse<?>> updateProjects(@Valid @RequestBody UpdateProjectDTO projectDTO){
         try{
@@ -111,31 +137,4 @@ public class ProjectsController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
-
-    @GetMapping("/by-user")
-    public ResponseEntity<ApiResponse<?>> getProjectsByUser(){
-        try{
-
-            List<Project> result = projectService.getProjectsByUserId();
-
-            ApiResponse<List<Project>> response = new ApiResponse<>(
-                    "success",
-                    "Got projects successfully.",
-                    HttpStatus.OK.value(),
-                    result
-            );
-            return ResponseEntity.status(HttpStatus.OK).body(response);
-
-        } catch (DataAccessException e){
-
-            String rootMessage = e.getRootCause() != null ? e.getRootCause().getMessage() : e.getMessage();
-
-            ApiResponse<Object> response = new ApiResponse<>("error", "Database error: " + rootMessage, HttpStatus.INTERNAL_SERVER_ERROR.value());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
-        } catch (Exception e) {
-            ApiResponse<Object> response = new ApiResponse<>("error", "Unexpected error: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR.value());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
-        }
-    }
-
 }

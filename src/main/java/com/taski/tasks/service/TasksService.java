@@ -6,6 +6,7 @@ import com.taski.projects.service.ProjectService;
 import com.taski.tasks.dto.CreateTaskDTO;
 import com.taski.tasks.dto.UpdateTaskDTO;
 import com.taski.tasks.model.Task;
+import com.taski.tasks.model.TaskDetails;
 import com.taski.tasks.model.TaskWithProject;
 import com.taski.tasks.repository.TasksRepository;
 import com.taski.utils.Constants;
@@ -59,7 +60,8 @@ public class TasksService {
         tasksRepository.deleteTask(id);
     }
 
-    public List<TaskWithProject> getTasksByUserId(Long userId){
+    public List<TaskWithProject> getTasksByUserId(){
+        Long userId = Utils.getUserID();
         Optional<User> userOPT = userRepository.getUserById(userId);
         if (userOPT.isEmpty()){
             throw new IllegalStateException("User not found, invalid or expired token.");
@@ -70,9 +72,22 @@ public class TasksService {
         return tasksRepository.getTasksByUserId(user.getId());
     }
 
-    public boolean userHasTask(Long taskId) {
+    public List<TaskDetails> getTasksByProjectId(Long projectId){
         Long userId = Utils.getUserID();
-        return getTasksByUserId(userId)
+        Optional<User> userOPT = userRepository.getUserById(userId);
+        if (userOPT.isEmpty()){
+            throw new IllegalStateException("User not found, invalid or expired token.");
+        }
+
+        if(!projectService.userHasProject(projectId)){
+            throw new IllegalStateException(Constants.NO_ACCESS_TO_PROJECT);
+        }
+
+        return tasksRepository.getTaskByProject(projectId);
+    }
+
+    public boolean userHasTask(Long taskId) {
+        return getTasksByUserId()
                 .stream()
                 .anyMatch(task -> Objects.equals(task.getId(), taskId));
     }
