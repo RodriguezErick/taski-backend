@@ -8,6 +8,6 @@ DELIMITER $$
         
         SELECT COUNT(*) > 0 INTO has_tag FROM tbl_task_tags WHERE task_id = p_task_id AND tag_id = p_tag_id;
         
-        RETURN hat_tag;
+        RETURN has_tag;
     END
 $$ DELIMITER ;

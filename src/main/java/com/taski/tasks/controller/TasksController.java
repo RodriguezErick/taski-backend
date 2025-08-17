@@ -33,14 +33,14 @@ public class TasksController {
     public ResponseEntity<ApiResponse<?>> createTask(@Valid @RequestBody CreateTaskDTO taskDTO){
         try{
             tasksService.createTask(taskDTO);
-            Map<String, String> projectInfo = new HashMap<>();
-            projectInfo.put("title", taskDTO.getTitle());
+            Map<String, String> taskInfo = new HashMap<>();
+            taskInfo.put("title", taskDTO.getTitle());
 
             ApiResponse<Map<String, String>> response = new ApiResponse<>(
                     "success",
                     "Task created successfully",
                     HttpStatus.CREATED.value(),
-                    projectInfo
+                    taskInfo
             );
             return ResponseEntity.status(HttpStatus.CREATED).body(response);
         } catch (DataAccessException e) {
