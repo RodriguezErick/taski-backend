@@ -44,3 +44,4 @@ src/main/resources/application.properties
 
 .DS_Store
 database/.DS_Store
+src/.DS_Store
