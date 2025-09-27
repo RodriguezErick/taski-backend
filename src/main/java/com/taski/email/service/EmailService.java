@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 public class EmailService {
     private final JavaMailSender javaMailSender;
 
-    @Value("${app.mail.base-url}")
+    @Value("${frontend.url}")
     private String urlBase;
 
     @Value("${app.mail.verify-path}")
